@@ -1,4 +1,4 @@
-#SDL2Sniper
+# SDL2Sniper
 
 I tried to make a horizon perspective in 2D with SDL2. For some reason it work fine in windows but very slow in linux (when you aim)
 
