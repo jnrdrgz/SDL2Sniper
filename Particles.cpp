@@ -25,6 +25,19 @@ void Particles::update(){
     }
 }
 
+void Particles::zoom(){
+
+    for(int i = 0; i<130; i++){
+        if(p.particles[0].w < 30){
+            p.particles[i].w += 3;
+            p.particles[i].h += 3;
+        }
+        p.particles[i].x -= 1;
+        p.particles[i].y -= 1;
+    }
+
+}
+
 void Particles::draw(SDL_Renderer* r){
     for(int i = 0; i<130; i++){
         SDL_SetRenderDrawColor(r, 255,0,0,0);

@@ -1,7 +1,7 @@
 #ifndef PARTICLES_H
 #define PARTICLES_H
 
-#include <SDL2/SDL.h>
+#include "SDL.h"
 #include <iostream>
 
 struct Prtcl{
@@ -15,6 +15,7 @@ public:
     void split(int x, int y, int xmax, int ymax, int w, int h);
 
     void update();
+    void zoom();
 
     void draw(SDL_Renderer* r);
 

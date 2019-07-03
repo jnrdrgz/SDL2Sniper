@@ -1,21 +1,25 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <vector>
 
-#include "Game.hpp"
+#include "TextureManager.h"
+#include "Game.h"
 #include "Bullet.h"
 #include "Particles.h"
 #include "Enemy.h"
+#include "Machete.h"
 
 #define LOG_COMMENT(msg) std::cout << msg << "\n";
+#define Texture(t) textureManager.get_texture(t, game.renderer)
 
 const int sw = 960;
 const int sh = 540;
 Game game;
 SDL_Event event;
 SDL_Texture* aimT = NULL;
-
+TextureManager textureManager;
 
 class Aim
 {
@@ -30,23 +34,14 @@ int main(int argc, char* args[])
     int frameTime;
     int frames = 0;
 
-    game.init("Don't go back", sw,sh);
+    game.init("Zombie Sniper", sw,sh);
 
      SDL_ShowCursor(SDL_DISABLE);
 
-    //aim
-    SDL_Surface* s = IMG_Load("assets/aim2.png");
-    aimT = SDL_CreateTextureFromSurface(game.renderer, s);
-    SDL_FreeSurface(s);
-    SDL_Rect src = {0,0,600,600};
+    aimT = Texture("assets/aim2.png");
     SDL_Rect dst = {0,0,2400,2400};
 
-    //desert
-//    s = IMG_Load("assets/desert.png");
-//    background = SDL_CreateTextureFromSurface(game.renderer, s);
-//    SDL_FreeSurface(s);
-//    SDL_Rect srcBack = {0,0,900,500};
-//    SDL_Rect dstBack = {0,0,sw,sh};
+    Machete machete = Machete(Texture("assets/Machete.png"));
 
     SDL_Rect sand = {0,sh/2,sw,sh/2};
     SDL_Rect sky = {0,0,sw,sh/2};
@@ -62,12 +57,11 @@ int main(int argc, char* args[])
     bool hurt = false;
 
     //enemies
-    Enemy enemy = Enemy(500/2, 500/2+15, 1, 5, (rand()%5)+1 );
-    Enemy enemy1 = Enemy((500/2)-64, 500/2+15, 1, 5, (rand()%5)+1 );
-    Enemy enemy2 = Enemy((500/2)+64, 500/2+15, 1, 5, (rand()%5)+1 );
+    Enemy enemy = Enemy(500/2, 500/2+15, 1, 5, (rand()%5)+1, Texture("assets/zombie.png") );
+    Enemy enemy1 = Enemy((500/2)-64, 500/2+15, 1, 5, (rand()%5)+1, Texture("assets/zombie.png") );
+    Enemy enemy2 = Enemy((500/2)+64, 500/2+15, 1, 5, (rand()%5)+1, Texture("assets/zombie.png") );
 
     std::vector<Enemy*> enemies = {&enemy, &enemy1, &enemy2};
-    LOG_COMMENT(enemies.size());
 
     Particles particles;
 
@@ -79,10 +73,10 @@ int main(int argc, char* args[])
 
     int totalenemies = 3;
     int killed = 0;
-    int meters = 6700;
+    int meters = 4000;
     int life = 100;
     int bullets = 5;
-    int cartuchos = 5;
+    int cartuchos = 10;
 
     while(game.running){
         SDL_RenderClear(game.renderer);
@@ -101,53 +95,49 @@ int main(int argc, char* args[])
 
                     switch(event.key.keysym.sym){
                         case SDLK_w:
-                            for(unsigned int i = 0; i<enemies.size(); i++){
-                                enemies[i]->closer();
-                                if(meters > 0){
-                                    meters--;
-                                    if(meters %100 == 0){
-                                        std::cout << "meters left: " << meters << "\n";
-                                    }
+                            if(!aiming){
+                                for(unsigned int i = 0; i<enemies.size(); i++){
+                                    enemies[i]->closer();
+                                }
 
-                                    if(meters < 4700){
-                                        if((meters/2)%100 == 0){
-                                            goal.h += 3;
-                                            goal.y -= 3;
+                                particles.deactivate();
+
+                                if(meters > 0){
+                                        meters--;
+                                        if(meters %100 == 0){
+                                            std::cout << "meters left: " << meters << "\n";
+                                        }
+
+                                        if(meters < 4700){
+                                            if((meters/2)%100 == 0){
+                                                goal.h += 3;
+                                                goal.y -= 3;
+                                            }
                                         }
                                     }
-                                }
 
-                                if(meters == 0){
-                                    LOG_COMMENT("YOU REACH THE GOAL");
-                                }
+                                    if(meters == 0){
+                                        LOG_COMMENT("YOU REACH THE GOAL");
+                                    }
                             }
+
                             keyPressed = false;
                         break;
                         case SDLK_s:
-//                            for(unsigned int i = 0; i<enemies.size(); i++){
-//                                enemies[i]->go_back();
-//                                meters++;
-//                                if(meters < 4700){
-//                                    if((meters/2)%100 == 0){
-//                                        goal.h -= 3;
-//                                        goal.y += 3;
-//                                    }
-//                                }
-//
-//                            }
-//
 //                            keyPressed = false;
                         break;
                         case SDLK_d:
                             for(unsigned int i = 0; i<enemies.size(); i++){
                                 enemies[i]->mov(1);
                             }
+                            particles.deactivate();
                             keyPressed = false;
                         break;
                         case SDLK_a:
                             for(unsigned int i = 0; i<enemies.size(); i++){
                                 enemies[i]->mov(0);
                             }
+                            particles.deactivate();
                             keyPressed = false;
                         break;
                         case SDLK_r:
@@ -209,7 +199,7 @@ int main(int argc, char* args[])
 
                                     particles.activate();
                                     LOG_COMMENT("SHOOTEED");
-                                    break;
+                                    //break;
                                 }
                             }
 
@@ -248,7 +238,7 @@ int main(int argc, char* args[])
                 break;
         }
 
-//        SDL_RenderCopy(game.renderer, background, &srcBack, &dstBack);
+        machete.handle_events(event);
         SDL_SetRenderDrawColor(game.renderer, 220, 198, 160,0);
         SDL_RenderFillRect(game.renderer, &sand);
 
@@ -259,10 +249,17 @@ int main(int argc, char* args[])
         for(unsigned int i = 0; i<enemies.size(); i++){
             if(enemies[i]->hurt(life, frames) && enemies[i]->isActive()){
                 if(!aiming){
-                    std::cout << "life: " << life << "\n";
+//                    std::cout << "life: " << life << "\n";
+                    if(life == 0)
+                        std::cout << "life: " << life << ". Death." << "\n";
                     hurt = true;
                 }
             }
+        }
+
+        if(particles.isActive()){
+            particles.update();
+            particles.draw(game.renderer);
         }
 
         for(unsigned int i = 0; i<enemies.size(); i++){
@@ -272,18 +269,27 @@ int main(int argc, char* args[])
         SDL_SetRenderDrawColor(game.renderer, 135, 206, 235,0);
         SDL_RenderFillRect(game.renderer, &sky);
 
+        machete.update();
+        machete.draw(game.renderer);
+
+        if(machete.isActive()){
+            for(unsigned int i = 0; i<enemies.size(); i++){
+                if(enemies[i]->hurt(fl, frames)){
+                    if(enemies[i]->getX()>100 && enemies[i]->getX()<600){
+                        enemies[i]->kill();
+                    }
+                }
+            }
+        }
+
         if(meters < 4700){
             SDL_SetRenderDrawColor(game.renderer, 125,125,0,0);
             SDL_RenderFillRect(game.renderer, &goal);
         }
 
-        if(particles.isActive()){
-            particles.update();
-            particles.draw(game.renderer);
-        }
 
         if(aiming){
-            SDL_RenderCopy(game.renderer, aimT, &src, &dst);
+            SDL_RenderCopy(game.renderer, aimT, NULL, &dst);
         }
         SDL_SetRenderDrawColor(game.renderer, 255,255,255,255);
 
@@ -315,12 +321,12 @@ int main(int argc, char* args[])
 
         seconds = SDL_GetTicks()/1000;
 
-        if(seconds-lastSeconds == 5){
+        if(seconds-lastSeconds == 15){
             lastSeconds = seconds;
 
-            if(totalenemies < 15){
-                for(int i = 0; i<6; i++){
-                    enemies.push_back(new Enemy((rand()%sw), (500/2)+15, 1, 5, (rand()%5)+1));
+            if(meters > 1500){
+                for(int i = 0; i<10; i++){
+                    enemies.push_back(new Enemy((rand()%sw), (500/2)+15, 1, 5, (rand()%5)+1, Texture("assets/zombie.png")));
                     totalenemies++;
                 }
             }

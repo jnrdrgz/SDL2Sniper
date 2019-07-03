@@ -12,6 +12,18 @@ Enemy::Enemy(int x, int y, int w, int h, int vel){
     //texture = textureManager["solider.png"]
 }
 
+Enemy::Enemy(int x, int y, int w, int h, int vel, SDL_Texture* t){
+    dst.x = x;
+    dst.y = y;
+    dst.w = w;
+    dst.h = h;
+    this->vel = vel;
+    active = true;
+    last_w = w;
+    last_h = h;
+    texture = t;
+}
+
 int Enemy::getX(){
     return dst.x;
 }
@@ -84,7 +96,7 @@ void Enemy::dezoom(){
 
 void Enemy::kill(){
     active = false;
-    SDL_DestroyTexture(texture); //???
+    //SDL_DestroyTexture(texture); //???
 }
 
 void Enemy::update(){
@@ -122,10 +134,20 @@ bool Enemy::hurt(int &health, int f){
     return false;
 }
 
+void Enemy::set_texture(SDL_Texture* t)
+{
+    texture = t;
+}
+
+
 void Enemy::draw(SDL_Renderer* r){
 //        if(active){
         if(texture != NULL){
-
+            if(active){
+                SDL_RenderCopyEx(r, texture, NULL, &dst, 0, 0, SDL_FLIP_NONE);
+            } else {
+                SDL_RenderCopyEx(r, texture, NULL, &dst, 90, 0, SDL_FLIP_NONE);
+            }
         } else {
             SDL_SetRenderDrawColor(r, 0,0,0,255);
             SDL_RenderFillRect(r, &dst);

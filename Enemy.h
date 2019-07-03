@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Bullet.h"
-#include "Game.hpp"
+#include "Game.h"
 
 class Enemy
 {
@@ -13,10 +13,11 @@ public:
     ~Enemy(){
         dst.w = 0;
         dst.h = 0;
-        SDL_DestroyTexture(texture);
+        //SDL_DestroyTexture(texture);
     }
 
     Enemy(int x, int y, int w, int h, int vel);
+    Enemy(int x, int y, int w, int h, int vel, SDL_Texture* t);
 
     int getX();
     int getY();
@@ -34,9 +35,10 @@ public:
     bool isInside(Bullet b);
     bool hurt(int &health, int f);
 
+    void set_texture(SDL_Texture* t);
     void draw(SDL_Renderer* r);
 private:
-    SDL_Rect dst;
+    SDL_Rect src, dst;
     SDL_Texture* texture = NULL;
     int vel, last_w, last_h;
     bool active;
