@@ -30,6 +30,7 @@ void Machete::handle_events(SDL_Event event){
                 switch(event.key.keysym.sym){
                     case SDLK_f:
                         active = true;
+                        SDL_Log("machete");
                     break;
                 }
             }

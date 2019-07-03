@@ -1,6 +1,6 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <vector>
 
@@ -41,7 +41,7 @@ int main(int argc, char* args[])
     aimT = Texture("assets/aim2.png");
     SDL_Rect dst = {0,0,2400,2400};
 
-    Machete machete = Machete(Texture("assets/Machete.png"));
+    Machete machete = Machete(Texture("assets/machete.png"));
 
     SDL_Rect sand = {0,sh/2,sw,sh/2};
     SDL_Rect sky = {0,0,sw,sh/2};

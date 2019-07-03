@@ -38,9 +38,9 @@ void Game::init(std::string title, int window_w, int window_h){
 				{
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 				} else {
-					if (TTF_Init() < 0) {
-						printf("ttf could not initialize\n");
-					}
+					//if (TTF_Init() < 0) {
+					//	printf("ttf could not initialize\n");
+					//}
 
                     SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
 					running = true;
