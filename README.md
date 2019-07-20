@@ -1,6 +1,6 @@
 # SDL2ZombieSniper
 
-I tried to make a horizon perspective in 2D with SDL2. For some reason it work fine in windows but very slow in linux (when you aim)
+I tried to make a horizon perspective in 2D with SDL2.
 
 Later I'm going to write a makefile, for now to play it just put this in the console:
 ```
