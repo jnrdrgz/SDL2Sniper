@@ -125,9 +125,13 @@ bool Enemy::isInside(Bullet b){
 }
 
 bool Enemy::hurt(int &health, int f){
-    if(dst.y+dst.h >= 540 && dst.y+dst.h <= 540+dst.h ){
+    if(dst.y+dst.h >= 540 && dst.y+dst.h <= 540+dst.h && active){
         if(f == 30){
             health--;
+            if(health < 0){
+                health = 0;
+            }
+            std::cout << health << std::endl;
         }
         return true;
     }
@@ -153,4 +157,64 @@ void Enemy::draw(SDL_Renderer* r){
             SDL_RenderFillRect(r, &dst);
         }
 //        }
+}
+
+void Enemy::handle_events(SDL_Event event, Aim aim, Bullet& bullet, Particles& particles){
+    switch (event.type)
+    {
+        case SDL_KEYDOWN:
+            switch(event.key.keysym.sym){
+                case SDLK_w:
+                    if(!aim.isAiming()){
+                        closer();
+                    }
+                break;
+                case SDLK_d:
+                    mov(1);
+                break;
+
+                case SDLK_a:
+                    mov(0);
+                break;
+            }
+
+        break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                if(!buttonPressed){
+                    buttonPressed = true;
+                    if(event.button.button == SDL_BUTTON_RIGHT){
+                        if(aim.isAiming() == true){
+                            zoom();
+                        }
+                        if(aim.isAiming() == false){
+                            dezoom();
+                        }
+                    }
+                    if(event.button.button == SDL_BUTTON_LEFT){
+                        if(aim.getBullets() > 0){
+                            if(isInside(bullet)){
+                                kill();
+                                bullet.change_state();
+
+                                //particles.split(event.button.x-10,event.button.y-15,event.button.x+10,enemies[i]->getYmax(), 1,1);
+                                particles.split(getX(),getY(),getXmax(),getYmax(), 2,2);
+
+                                particles.activate();
+                            }
+
+
+
+                        }
+                        dezoom();
+
+                    }
+                }
+            break;
+
+
+        case SDL_MOUSEBUTTONUP:
+            buttonPressed = false;
+        break;
+    }
 }

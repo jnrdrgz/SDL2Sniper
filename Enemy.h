@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "Bullet.h"
+#include "Particles.h"
+#include "Aim.h"
 #include "Game.h"
 
 class Enemy
@@ -37,11 +39,14 @@ public:
 
     void set_texture(SDL_Texture* t);
     void draw(SDL_Renderer* r);
+
+    void handle_events(SDL_Event event, Aim aim, Bullet& bullet, Particles& particles);
+
 private:
     SDL_Rect src, dst;
     SDL_Texture* texture = NULL;
     int vel, last_w, last_h;
-    bool active;
+    bool active, buttonPressed = false;
 };
 
 #endif // ENEMY_H

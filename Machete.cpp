@@ -3,7 +3,7 @@
 Machete::Machete(SDL_Texture* t){
     texture = t;
     dst.x = (960/2) + 75;
-    dst.y = 640-250;
+    dst.y = 640-280;
     dst.w = 90;
     dst.h = 200;
 }
@@ -30,7 +30,6 @@ void Machete::handle_events(SDL_Event event){
                 switch(event.key.keysym.sym){
                     case SDLK_f:
                         active = true;
-                        SDL_Log("machete");
                     break;
                 }
             }
@@ -40,7 +39,7 @@ void Machete::handle_events(SDL_Event event){
            key_press = false;
            active = false;
            dst.x = (960/2) + 75;
-           dst.y = 640-250;
+           dst.y = 640-280;
        break;
     }
 }
