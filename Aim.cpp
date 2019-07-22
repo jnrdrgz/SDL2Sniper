@@ -7,7 +7,7 @@ void Aim::draw(SDL_Renderer* r){
 }
 
 
-void Aim::handle_events(SDL_Event event, Bullet& bullet){
+void Aim::handle_events(SDL_Event event, Bullet& bullet, Audio audio){
         switch (event.type)
         {
             case SDL_KEYDOWN:
@@ -83,6 +83,8 @@ void Aim::handle_events(SDL_Event event, Bullet& bullet){
                             std::cout << "bullets: " << bullets << "\n";
 
                             aiming = false;
+
+                            audio.MakeSoundSniper();
                         } else {
                             std::cout << "Out of ammo. Press R.\n";
                         }

@@ -126,9 +126,9 @@ int main(int argc, char* args[])
         }
 
         if(state == GAME){
-
+        	//a
             machete.handle_events(event);
-            aim.handle_events(event, bullet);
+            aim.handle_events(event, bullet, audio);
             for(unsigned int i = 0; i<enemies.size(); i++){
                 enemies[i]->handle_events(event, aim, bullet, particles);
             }

@@ -41,7 +41,7 @@ void Game::init(std::string title, int window_w, int window_h){
 					if (TTF_Init() < 0) {
 						printf("ttf could not initialize\n");
 					}
-					if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 38000 ) < 0 )
+					if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
                 	{
                     	printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );	
                     }	

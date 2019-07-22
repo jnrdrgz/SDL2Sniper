@@ -6,7 +6,7 @@ Audio::Audio(){
 		printf("error loading sound\n");
 }
 Audio::~Audio(){
-	Mix_FreeChunk(sniperShot);
+	//Mix_FreeChunk(sniperShot);
 }
 
 void Audio::MakeSoundSniper(){

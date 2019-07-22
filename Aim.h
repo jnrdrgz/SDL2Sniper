@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include "Bullet.h"
+#include "Audio.h"
 
 class Aim
 {
@@ -13,7 +14,7 @@ public:
     }
 
     void draw(SDL_Renderer* r);
-    void handle_events(SDL_Event event, Bullet& bullet);
+    void handle_events(SDL_Event event, Bullet& bullet, Audio audio);
     void kill(){killed++; std::cout << "Enemies killed: " << killed << "\n";;}
 
     bool isAiming(){return aiming;}
