@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <vector>
 
@@ -14,6 +15,7 @@
 #include "Enemy.h"
 #include "Machete.h"
 #include "Aim.h"
+#include "Audio.h"
 
 #define LOG_COMMENT(msg) std::cout << msg << "\n";
 #define Texture(t) textureManager.get_texture(t, game.renderer)
@@ -21,6 +23,7 @@
 Game game;
 SDL_Event event;
 TextureManager textureManager;
+
 
 int main(int argc, char* args[])
 {
@@ -34,6 +37,7 @@ int main(int argc, char* args[])
     game.init("Zombie Sniper", sw,sh);
     SDL_Log("Game inited");
 
+    Audio audio;
 
     SDL_ShowCursor(SDL_DISABLE);
     SDL_Log("cursor disabled");
@@ -100,6 +104,8 @@ int main(int argc, char* args[])
             case SDL_QUIT:
                 game.running = false;
                 break;
+            case SDL_KEYDOWN:
+            	break;
         }
 
 

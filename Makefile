@@ -4,13 +4,13 @@
 CC := g++
 
 # set the compiler flags
-CFLAGS := `sdl2-config --libs` -lSDL2_image -lSDL2_ttf
+CFLAGS := `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # add header files here
-HDRS := Aim.h Bullet.h Constants.h Enemy.h Game.h Machete.h Menu.h MenuItem.h Particles.h TextureManager.h
+HDRS := Aim.h Bullet.h Constants.h Enemy.h Game.h Machete.h Menu.h MenuItem.h Particles.h TextureManager.h Audio.h
 
 # add source files here
-SRCS := Aim.cpp Bullet.cpp Enemy.cpp Game.cpp Machete.cpp main.cpp Menu.cpp MenuItem.cpp Particles.cpp TextureManager.cpp
+SRCS := Aim.cpp Bullet.cpp Enemy.cpp Game.cpp Machete.cpp main.cpp Menu.cpp MenuItem.cpp Particles.cpp TextureManager.cpp Audio.cpp
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)

@@ -11,7 +11,7 @@ Game::~Game()
 }
 
 void Game::init(std::string title, int window_w, int window_h){
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ){
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ){
         printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
     } else {
 		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ){
@@ -41,6 +41,10 @@ void Game::init(std::string title, int window_w, int window_h){
 					if (TTF_Init() < 0) {
 						printf("ttf could not initialize\n");
 					}
+					if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 38000 ) < 0 )
+                	{
+                    	printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );	
+                    }	
 
                     SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
 					running = true;
@@ -54,5 +58,7 @@ void Game::clean()
 {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	Mix_Quit();
+	IMG_Quit();
 	SDL_Quit();
 }
