@@ -221,7 +221,7 @@ int main(int argc, char* args[])
 
                 if(aim.getMeters() > 1500){
                     for(int i = 0; i<10; i++){
-                        enemies.push_back(new Enemy((rand()%sw), (500/2)+15, 20, 40, (rand()%5)+1, Texture(enems[rand()%3])));
+                        enemies.push_back(new Enemy((rand()%sw), (500/2)+15, 1, 5, (rand()%5)+1, Texture(enems[rand()%3])));
                         totalenemies++;
                     }
                 }

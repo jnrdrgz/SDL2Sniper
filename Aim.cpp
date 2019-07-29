@@ -87,6 +87,7 @@ void Aim::handle_events(SDL_Event event, Bullet& bullet, Audio audio){
                             audio.MakeSoundSniper();
                         } else {
                             std::cout << "Out of ammo. Press R.\n";
+                            aiming = false;
                         }
                     }
                 }
