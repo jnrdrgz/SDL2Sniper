@@ -105,11 +105,18 @@ int main(int argc, char* args[])
                 game.running = false;
                 break;
             case SDL_KEYDOWN:
+                if(event.key.keysym.sym == SDLK_w){
+                    if((aim.getMeters()/2)%100 == 0 || (aim.getMeters()/2)%50 == 0 ){
+                        goal.h += 3;
+                        goal.y -= 3;
+                    }
+                }
+
             	break;
         }
 
 
-        if(state == MENU){
+        if(state == MENU || state == OPTIONS){
             SDL_SetRenderDrawColor(game.renderer, 135, 206, 235,0);
             SDL_RenderFillRect(game.renderer, &sky);
 

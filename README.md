@@ -11,6 +11,7 @@ I tried to make a horizon perspective in 2D with SDL2. The assets are just for t
 | `Left Click`        | Shoot               	 		 |
 | `Right Click`       | Aim               	 	     	 |
 | `f`                 | Machete                          |
+| `Space`             | Select option in menu            |
 
 ## Usage
 
