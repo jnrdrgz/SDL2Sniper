@@ -14,7 +14,7 @@ I tried to make a horizon perspective in 2D with SDL2. The assets are just for t
 
 ## Usage
 
-That would build and run the game:
+To play it just:
 
     $ make all
 	$ ./game
